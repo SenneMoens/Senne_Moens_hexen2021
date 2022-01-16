@@ -1,38 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DAE.Commons;
+using System.Linq;
 
-public class Grid : MonoBehaviour
+public class Grid<TTile>
 {
-    public List<HexTile> HexTileList;
+	private BidirectionalDictionary<TTile, (int q, int r, int s)> _tiles = new BidirectionalDictionary<TTile, (int q, int r, int s)>();
 
-    [SerializeField] private GameObject _hexTilePf = null;
+	public void Register(TTile tile, int q, int r, int s)
+	{
+		_tiles.Add(tile, (q, r, s));
+	}
+	public bool TryGetTileAt(int q, int r, int s, out TTile tile)
+		=> _tiles.TryGetKey((q, r, s), out tile);
 
-    [SerializeField] public int Radius;
+	public bool TryGetCoordinatesAt(TTile tile, out (int q, int r, int s) coordinate)
+		=> _tiles.TryGetValue(tile, out coordinate);
 
-    private void Start()
-    {
-        GenerateGrid(Radius);
-
-        foreach(HexTile hexTile in HexTileList)
-        {
-            Instantiate(_hexTilePf, hexTile.ToWorldPosition(), Quaternion.identity, transform);
-        }
-    }
-
-    public void GenerateGrid(int radius)
-    {
-        HexTileList = new List<HexTile>();
-
-        for (int q = -radius; q <= radius; q++)
-        {
-            int r1 = Mathf.Max(-radius, -q - radius);
-            int r2 = Mathf.Min(radius, -q + radius);
-
-            for (int r = r1; r <= r2; r++)
-            {
-                HexTileList.Add(new HexTile(q, r, -q - r));
-            }
-        }
-    }
+	public List<TTile> GetTiles()
+		=> _tiles.Keys.ToList();
 }

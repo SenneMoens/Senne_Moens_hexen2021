@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ea5d5a986a2f624eb11d3868ea98e88, type: 3}
+  m_Name: GridHelper
+  m_EditorClassIdentifier: 
+  GridRadius: 3
+  HexTilePf: {fileID: -8146921941142111603, guid: 790b6cec5c1a5c94885612342f185a33, type: 3}
+  PlayerPiecePrefab: {fileID: 3283586152063571194, guid: 21355e0fb21f9eb4099499696ccfb9d6, type: 3}
+  EnemyPiecePrefab: {fileID: 6140917512290913267, guid: 1f97197471aee084485d5b82db7a333e, type: 3}
