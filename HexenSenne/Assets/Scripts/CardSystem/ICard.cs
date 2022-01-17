@@ -2,11 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface ICard<TPiece, TTile>
+public class ICard : MonoBehaviour
 {
+    // Start is called before the first frame update
+    void Start()
+    {
+        
+    }
 
-	List<TTile> Positions(TPiece piece, TTile tile);
-	void Initialize(Board<TPiece, TTile> board, Grid<TTile> grid);
-	bool Execute(TPiece piece, TTile tile);
-
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
 }
