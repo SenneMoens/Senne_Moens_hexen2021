@@ -19,16 +19,17 @@ public class GameLoop : Singleton<GameLoop>
 	private Grid<HexTileHandler> _grid = new Grid<HexTileHandler>();
 	private Piece<HexTileHandler> _playerPiece = null;
 	private Deck<BaseCard<Piece<HexTileHandler>, HexTileHandler>, Piece<HexTileHandler>, HexTileHandler> _deck;
-	private BaseCard<Piece<HexTileHandler>, HexTileHandler> _selectedCard;
+	public BaseCard<Piece<HexTileHandler>, HexTileHandler> _selectedCard;
+	private StateMachine<GameStateBase> _gameStateMachine = new StateMachine<GameStateBase>();
+
 
 	private void Start()
 	{
 		Board<Piece<HexTileHandler>, HexTileHandler> board = new Board<Piece<HexTileHandler>, HexTileHandler>();
 		HexagonalGrid hexagonalGrid = new HexagonalGrid(_helper.Radius);
 
-		PlaceTiles(hexagonalGrid);
+		GenerateGrid(hexagonalGrid);
 		RegisterTiles(hexagonalGrid, _grid);
-
 		SpawnPlayer();
 		SpawnEnemies();
 
@@ -55,7 +56,7 @@ public class GameLoop : Singleton<GameLoop>
 		}
 	}
 
-	private void PlaceTiles(HexagonalGrid grid)
+	private void GenerateGrid(HexagonalGrid grid)
 	{
 		foreach (HexTile hexTile in grid.HexTiles)
 		{
@@ -112,11 +113,6 @@ public class GameLoop : Singleton<GameLoop>
 			if (tile != null) tile.Highlight = true;
 	}
 
-	public void Execute(HexTileHandler hexTileHandler)
-	{
-		_deck.PlayCard(SelectedCard, PlayerPiece, hexTileHandler);
-	}
-
 	public void UnhighlightAll()
 	{
 		List<HexTileHandler> tiles = _grid.GetTiles();
@@ -125,13 +121,23 @@ public class GameLoop : Singleton<GameLoop>
 			tile.Highlight = false;
 	}
 
+	public void Execute(HexTileHandler hexTileHandler)
+		//_deck.PlayCard(SelectedCard, PlayerPiece, hexTileHandler);
+			 => _gameStateMachine.CurrentState.Execute(hexTileHandler);
+
+
 	private void Select(BaseCard<Piece<HexTileHandler>, HexTileHandler> card)
-	{
-		_selectedCard = card;
-	}
+		//_selectedCard = card;
+			 => _gameStateMachine.CurrentState.Select(card);
 
 	public void DeselectAll()
-	{
-		_selectedCard = null;
-	}
+		//_selectedCard = null;
+			 => _gameStateMachine.CurrentState.DeselectAll();
+
+	public void Forward()
+			=> _gameStateMachine.CurrentState.Forward();
+
+
+	public void Backward()
+			=> _gameStateMachine.CurrentState.Forward();
 }
